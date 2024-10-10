@@ -1,3 +1,4 @@
+/*
 //var images = document.getElementsByClassName('un1lmc-pbTTYe-ibnC6b-BwqjC')
 var images = document.getElementsByTagName('img')
 const icones = [
@@ -30,9 +31,6 @@ const icones = [
 ]
 
 if (images.length > 0) {
-    /*for (i = 0; i <= images.length; i++) {
-        images[i].src = icones[i]
-    }*/
     for (let i in images) {
         if (i == images.length - 1)
             break
@@ -42,3 +40,20 @@ if (images.length > 0) {
 } else {
     console.warn('Sem imagens.')
 }
+*/
+function removeFirstLayer() {
+    document.body.querySelectorAll('.pbTTYe').forEach(function(camada) {
+        if (camada.innerText == 'Todas direcciones GHOST\nTodos os itens') {
+            camada.remove();
+        }
+    })
+}
+
+function replaceIcons() {
+    document.body.querySelectorAll('.pbTTYe img').forEach(function(imagem, index) {
+        imagem.src = icones[index].replace('url("','').replace('")','');
+    })
+}
+
+removeFirstLayer();
+replaceIcons();
