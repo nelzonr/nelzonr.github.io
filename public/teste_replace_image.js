@@ -47,7 +47,7 @@ function removeFirstLayer() {
             camada.remove();
         }
     })
-    replaceIcons();
+    //replaceIcons();
 }
 
 function replaceIcons() {
