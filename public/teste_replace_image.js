@@ -41,14 +41,19 @@ if (images.length > 0) {
     console.warn('Sem imagens.')
 }
 */
+
 function removeFirstLayer() {
-    document.body.querySelectorAll('.pbTTYe').forEach(function(camada) {
+    const camadas = document.getElementsByClassName('pbTTYe');
+    for (const camada of camadas) {
+        console.log(camada)
         if (camada.innerText == 'Todas direcciones GHOST\nTodos os itens') {
+            console.log(camada.innerText)
             camada.remove();
         }
-    })
-    //replaceIcons();
+    }
+    //setTimeout(() => { replaceIcons(); }, 1000);
 }
+
 
 function replaceIcons() {
     document.body.querySelectorAll('.pbTTYe img').forEach(function(imagem, index) {
