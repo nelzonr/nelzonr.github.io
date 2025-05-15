@@ -17,6 +17,10 @@ class Maps {
             get icones_image() { return $$('.pbTTYe img') },
             get enderecos() { return $$('.un1lmc-pbTTYe-ibnC6b-r4nke') }
         };
+
+        if ($$('#print').length > 0) {
+            $('body').classList.add('print')
+        }
     }
 
     async wait(ms) {
