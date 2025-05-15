@@ -1,0 +1,47 @@
+body {
+    width: 590pt;
+}
+
+body .mU4ghb {
+    width: 280px;
+}
+
+.pbTTYe {
+    padding: 0;
+    border-bottom: none
+}
+.pbTTYe-r4nke {
+    display: none;
+}
+.pbTTYe-BPrWId {
+    margin-left: 0;
+}
+.un1lmc-pbTTYe-ibnC6b-r4nke {
+    max-width: 100%;
+}
+
+.moldura {
+    position: absolute;
+    z-index: 999;
+    background-color: #000;
+}
+.moldura.t, .moldura.b {
+    height: 3px;
+    width: 1000px;
+}
+.moldura.r, .moldura.l {
+    height: 646px;
+    width: 3px;
+}
+.moldura.t, .moldura.l {
+    top: 70px;
+    left: 200px;
+}
+.moldura.r {
+    top: 70px;
+    left: 1200px;
+}
+.moldura.b {
+    top: 713px;
+    left: 200px;
+}
