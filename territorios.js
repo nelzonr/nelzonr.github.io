@@ -14,8 +14,8 @@ class Maps {
             get zoomOut() { return $('#zoomOutButton') }
         };
         this.LAYERS = {
-            all: document.getElementsByClassName('pbTTYe'),
-            icones_div: $$('.un1lmc-pbTTYe-ibnC6b-BwqjC'),
+            get all() { return document.getElementsByClassName('pbTTYe') },
+            get icones_div() { return $$('.un1lmc-pbTTYe-ibnC6b-BwqjC') },
             get icones_image() { return $$('.pbTTYe img') },
             get enderecos() { return $$('.un1lmc-pbTTYe-ibnC6b-r4nke') }
         };
