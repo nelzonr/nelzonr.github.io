@@ -96,7 +96,7 @@ class Maps {
         });
     }
 
-    static frame() {
+    static frame($, $$) {
         if ($$('.moldura').length < 1) {
             const elementos = ['t', 'r', 'b', 'l'];
             for (const elemento of elementos) {
