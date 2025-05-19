@@ -4,14 +4,14 @@ class Maps {
         window.$$ = window.$$ || document.querySelectorAll;
         this.WAIT_TIME_MS = 500;
         this.BUTTONS = {
-            zoomIn: $('#zoomInButton'),
-            menu: $('#map-action-menu'),
+            get zoomIn() { return $('#zoomInButton') },
+            get menu() { return $('#map-action-menu') },
             get imprimir_mapa() { return $$('#mapmenu-print')[--$$('#mapmenu-print').length] },
             get paisagem() { return $('#print-dialog-landscape span:last-child') },
             get imagem() { return $('#print-dialog-output-image span:last-child') },
             get a5() { return $('.VIpgJd-xl07Ob.VIpgJd-xl07Ob-GP8zAc:last-child > div:nth-child(7)') },
             get imprimir() { return $('button[name="print"]') },
-            zoomOut: $('#zoomOutButton')
+            get zoomOut() { return $('#zoomOutButton') }
         };
         this.LAYERS = {
             all: document.getElementsByClassName('pbTTYe'),
