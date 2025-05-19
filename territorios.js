@@ -1,7 +1,7 @@
 class Maps {
     constructor() {
-        const $ = document.querySelector;
-        const $$ = document.querySelectorAll;
+        const $ = (selector) => { return document.querySelector(selector) };
+        const $$ = (selector) => { return document.querySelectorAll(selector) };
         this.WAIT_TIME_MS = 500;
         this.BUTTONS = {
             get zoomIn() { return $('#zoomInButton') },
