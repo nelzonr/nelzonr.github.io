@@ -99,23 +99,22 @@ class Maps {
     }
 
     static frame() {
-        window.$ = window.$ || document.querySelector;
-        window.$$ = window.$$ || document.querySelectorAll;
+        const $molduras = document.querySelectorAll('.moldura');
 
-        if ($$('.moldura').length < 1) {
+        if ($molduras.length < 1) {
             const elementos = ['t', 'r', 'b', 'l'];
             for (const elemento of elementos) {
                 const div = document.createElement('div');
                 div.classList.add('moldura', elemento);
                 document.body.appendChild(div);
             }
-        } else if ($('.moldura').style.display == 'none') {
-            $$('.moldura').forEach(function(div) {
-                div.style.display = 'block';
+        } else if ($molduras[0].style.display == 'none') {
+            $molduras.forEach(function($moldura) {
+                $moldura.style.display = 'block';
             });
         } else {
-            $$('.moldura').forEach(function(div) {
-                div.style.display = 'none';
+            $molduras.forEach(function($moldura) {
+                $moldura.style.display = 'none';
             });
         }
     }
