@@ -1,5 +1,7 @@
 class Maps {
-    constructor($, $$) {
+    constructor() {
+        window.$ = window.$ || document.querySelector;
+        window.$$ = window.$$ || document.querySelectorAll;
         this.WAIT_TIME_MS = 500;
         this.BUTTONS = {
             zoomIn: $('#zoomInButton'),
@@ -97,6 +99,9 @@ class Maps {
     }
 
     static frame() {
+        window.$ = window.$ || document.querySelector;
+        window.$$ = window.$$ || document.querySelectorAll;
+
         if ($$('.moldura').length < 1) {
             const elementos = ['t', 'r', 'b', 'l'];
             for (const elemento of elementos) {
@@ -131,6 +136,6 @@ class Maps {
 }
 
 // Maps.frame();
-// const mapa = new Maps($, $$);
+// const mapa = new Maps();
 // mapa.generateMAP();
 // mapa.generatePDF();
