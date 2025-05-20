@@ -6,7 +6,7 @@ class Maps {
         this.BUTTONS = {
             get zoomIn() { return $('#zoomInButton') },
             get menu() { return $('#map-action-menu') },
-            get imprimir_mapa() { return $$('#mapmenu-print')[--$$('#mapmenu-print').length] },
+            get imprimir_mapa() { return $$('#mapmenu-print')[$$('#mapmenu-print').length - 1] },
             get paisagem() { return $('#print-dialog-landscape span:last-child') },
             get imagem() { return $('#print-dialog-output-image span:last-child') },
             get a5() { return $('.VIpgJd-xl07Ob.VIpgJd-xl07Ob-GP8zAc:last-child > div:nth-child(7)') },
@@ -53,7 +53,7 @@ class Maps {
 
     getIconsMap() {
         const icones = [];
-        for (const icone of this.LAYERS['icones_div'].slice(1)) {
+        for (const icone of Array.from(this.LAYERS['icones_div']).slice(1)) {
             icones.push(icone.style.backgroundImage.split('"')[1]);
         }
         return icones;
