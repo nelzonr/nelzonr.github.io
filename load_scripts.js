@@ -1,25 +1,52 @@
-var styles = ['https://nelzonr.github.io/public/territorios.css'];
-var scripts = ['https://nelzonr.github.io/public/replace_icons.js'];
+(function(action) {
+    if (typeof window.loadTerritoriosFiles !== 'function') {
+        window.loadTerritoriosFiles = (action) => {
+            if (loadTerritoriosFiles._loaded) {
+                return loadTerritoriosFiles[action]();
+            }
 
-var $body = document.getElementsByTagName('body')[0];
+            const style = 'https://nelzonr.github.io/territorios.css';
+            const script = 'https://nelzonr.github.io/territorios.js';
 
-function appendStyle(link) {
-    var $link = document.createElement('link');
-    $link.href = link;
-    $link.rel = 'stylesheet';
-    //$link.crossorigin = 'anonymous';
-    $body.append($link)
-}
+            const $style = document.createElement('link');
+            $style.href = style;
+            $style.rel = 'stylesheet';
+            $style.crossorigin = 'anonymous';
+            document.head.appendChild($style);
 
-function appendScript(link) {
-    var $script = document.createElement('script');
-    $script.src = link;
-    //$script.crossorigin = 'anonymous';
-    $body.append($script)
-}
 
-function loadExternalFiles() {
-    styles.map(link => appendStyle(link));
-    scripts.map(script => appendScript(script));
-}
-loadExternalFiles();
+            const $script = document.createElement('script');
+            $script.src = script;
+            $script.crossorigin = 'anonymous';
+            $script.onload = function() {
+                console.log('script Maps loaded');
+                loadTerritoriosFiles._loaded = true;
+                loadTerritoriosFiles.mapas = false;
+                loadTerritoriosFiles.Maps = () => {
+                    if (!loadTerritoriosFiles.mapas) {
+                        loadTerritoriosFiles.mapas = new Maps();
+                    }
+                    return loadTerritoriosFiles.mapas;
+                };
+                loadTerritoriosFiles.__FOO__ = () => {
+                    console.warn('No action provided');
+                };
+                loadTerritoriosFiles.frame = () => {
+                    Maps.frame();
+                };
+                loadTerritoriosFiles.generateMAP = () => {
+                    loadTerritoriosFiles.Maps().generateMAP();
+                };
+                loadTerritoriosFiles.generatePDF = () => {
+                    loadTerritoriosFiles.Maps().generatePDF();
+                };
+                loadTerritoriosFiles(action);
+            };
+            $script.onerror = function() {
+                console.error('Error loading script');
+            }
+            document.body.appendChild($script);
+        }
+    }
+    loadTerritoriosFiles(action);
+})('__FOO__');
