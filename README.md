@@ -35,8 +35,3 @@ Após o favorito ser salvo clique no respectivo favorito/bookmarklet para execut
     ```javascript
     javascript:(function(){ "function"!=typeof window.loadTerritoriosFiles&&(window.loadTerritoriosFiles=o=>{if(loadTerritoriosFiles._loaded)return loadTerritoriosFiles[o]();const r=document.createElement("link");r.href="https://nelzonr.github.io/territorios.css",r.rel="stylesheet",r.crossorigin="anonymous",document.head.appendChild(r);const e=document.createElement("script");e.src="https://nelzonr.github.io/territorios.js",e.crossorigin="anonymous",e.onload=function(){console.log("script Maps loaded"),loadTerritoriosFiles._loaded=!0,loadTerritoriosFiles.mapas=!1,loadTerritoriosFiles.Maps=()=>(loadTerritoriosFiles.mapas||(loadTerritoriosFiles.mapas=new Maps),loadTerritoriosFiles.mapas),loadTerritoriosFiles.__FOO__=()=>{console.warn("No action provided")},loadTerritoriosFiles.frame=()=>{Maps.frame()},loadTerritoriosFiles.generateMAP=()=>{loadTerritoriosFiles.Maps().generateMAP()},loadTerritoriosFiles.generatePDF=()=>{loadTerritoriosFiles.Maps().generatePDF()},loadTerritoriosFiles(o)},e.onerror=function(){console.error("Error loading script")},document.body.appendChild(e)}),loadTerritoriosFiles("generatePDF"); })();
     ```
-
-[Teste 1](javascript:alert("teste 1"))
-<a href="#" onclick="alert('Teste 2'); return false;">Teste 2</a>
-<a href="javascript:alert('teste 1')">Teste 3</a>
-[Teste 4](javascript:(function(){alert('Teste 4')})())
