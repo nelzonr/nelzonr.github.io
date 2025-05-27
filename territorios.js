@@ -53,8 +53,10 @@ class Maps {
 
     getIconsMap() {
         const icones = [];
-        for (const icone of Array.from(this.LAYERS['icones_div']).slice(1)) {
-            icones.push(icone.style.backgroundImage.split('"')[1]);
+        for (const icone of Array.from(this.LAYERS['icones_div'])) {
+            if (icone.getAttribute("iconcode") != "1739-000000") {
+                icones.push(icone.style.backgroundImage.split('"')[1]);
+            }
         }
         return icones;
     }
