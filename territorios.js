@@ -3,7 +3,7 @@ class Maps {
         const $ = (selector) => { return document.querySelector(selector) };
         const $$ = (selector) => { return document.querySelectorAll(selector) };
         this.WAIT_TIME_MS = 500;
-        this.BUTTONS = {
+        this.BUTTONS_MAP = {
             get zoomIn() { return $('#zoomInButton') },
             get menu() { return $('#map-action-menu') },
             get imprimir_mapa() { return $$('#mapmenu-print')[$$('#mapmenu-print').length - 1] },
@@ -12,6 +12,12 @@ class Maps {
             get a5() { return $('.VIpgJd-xl07Ob.VIpgJd-xl07Ob-GP8zAc:last-child > div:nth-child(7)') },
             get imprimir() { return $('button[name="print"]') },
             get zoomOut() { return $('#zoomOutButton') }
+        };
+        this.BUTTONS_IMPORT = {
+            get menuLayer() { return $('.un1lmc-j4gsHd') },
+            get menuReimportarMesclar() { return $$('.VIpgJd-j7LFlb.VIpgJd-eKm5Fc')[0] },
+            get menuReimportar() { return $$('.VIpgJd-j7LFlb.VIpgJd-eKm5Fc .VIpgJd-j7LFlb-bN97Pc')[$$('.VIpgJd-j7LFlb.VIpgJd-eKm5Fc .VIpgJd-j7LFlb-bN97Pc').length - 1] },
+            get menuSubstituir() { return $('.VIpgJd-xl07Ob.VIpgJd-xl07Ob-BvBYQ:last-child > div:first-child') }
         };
         this.LAYERS = {
             get all() { return document.getElementsByClassName('pbTTYe') },
@@ -26,10 +32,23 @@ class Maps {
     }
 
     async wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        const milliseconds = ms || this.WAIT_TIME_MS;
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    isNumeric = (val) => !isNaN(val) && !isNaN(parseFloat(val));
+
+    getElement(selector) {
+        if (typeof selector === 'string') {
+            return document.querySelector(selector);
+        } else if (selector instanceof HTMLElement) {
+            return selector;
+        }
+        return null;
     }
 
     simulateClick(element) {
+        const $element = getElement(element);
         const mouseDown = new MouseEvent('mousedown', {
             bubbles: true,
             cancelable: true,
@@ -46,9 +65,29 @@ class Maps {
             view: window
         });
     
-        element.dispatchEvent(mouseDown);
-        element.dispatchEvent(mouseUp);
-        element.dispatchEvent(click);
+        $element.dispatchEvent(mouseDown);
+        $element.dispatchEvent(mouseUp);
+        $element.dispatchEvent(click);
+    }
+
+    typeAndEnter(element, value) {
+        const $input = getElement(element);
+
+        if (!$input) {
+        console.error('Input não encontrado para selector:', element);
+        return false;
+        }
+
+        $input.focus();
+        const nativeInputSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+        nativeInputSetter.call($input, value);
+        $input.dispatchEvent(new Event('input', { bubbles: true }));
+        $input.dispatchEvent(new Event('change', { bubbles: true }));
+        // Pressiona Enter
+        $input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, bubbles: true }));
+        $input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', keyCode: 13, bubbles: true }));
+        $input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, bubbles: true }));
+        return true;
     }
 
     getIconsMap() {
@@ -100,6 +139,14 @@ class Maps {
         });
     }
 
+    checkIfExtensionLoaded() {
+        if (typeof window.mapsAutomation == 'object') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     static frame() {
         const $molduras = document.querySelectorAll('.moldura');
 
@@ -121,12 +168,56 @@ class Maps {
         }
     }
 
+    async changeMapNumber() {
+        const mapNumber = prompt("Território: ");
+        if (mapNumber !== '' && !isNumeric(mapNumber)) {
+            alert("Número inválido!");
+            return;
+        }
+
+        $edit_button = getElement('.docs-material-button-flat-default')
+        if (!$edit_button.classList.contains('docs-material-button-disabled')) {
+            simulateClick($edit_button);
+            await wait();
+        }
+        simulateClick('.goog-flat-menu-button.waffle-pivot-filter-pill-select');
+        await wait();
+        simulateClick('.waffle-filterbox-clear-button > div');
+        await wait();
+        if (mapNumber === '') {
+            simulateClick('.waffle-filterbox-select-all-button > div');
+        } else {
+            typeAndEnter('input.waffle-filterbox-input', mapNumber);
+            await wait();
+        }
+        simulateClick('.waffle-filterbox-ok-button > div');
+    }
+
     async generateMAP() {
         this.setIcons();
-        for (const button in this.BUTTONS) {
-            this.simulateClick(this.BUTTONS[button]);
-            await this.wait(this.WAIT_TIME_MS);
+        for (const button in this.BUTTONS_MAP) {
+            this.simulateClick(this.BUTTONS_MAP[button]);
+            await this.wait();
         }
+    }
+
+    async importFILE() {
+        this.setIcons();
+        for (const button in this.BUTTONS_IMPORT) {
+            this.simulateClick(this.BUTTONS_IMPORT[button]);
+            await this.wait();
+        }
+    }
+
+    async loadFile() {
+        if (!this.checkIfExtensionLoaded()) {
+            console.error('A extensão não foi detectada.');
+            return;
+        }
+        await mapsAutomation.clickNoPicker('button[id="1"]')
+        await mapsAutomation.typeAndEnter('Direcciones')
+        await this.wait(this.WAIT_TIME_MS * 4);
+        await mapsAutomation.clickFirstResult('[data-id="1T5YaD-KZgqogJBSBNOOsT9-cP5pK2ROYORvTYwfAA-Q"]')
     }
 
     generatePDF() {
@@ -137,6 +228,7 @@ class Maps {
 }
 
 // Maps.frame();
-// const mapa = new Maps();
+//const mapa = new Maps();
+// await mapa.importFILE();
 // mapa.generateMAP();
 // mapa.generatePDF();
