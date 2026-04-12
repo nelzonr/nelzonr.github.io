@@ -36,8 +36,6 @@ class Maps {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
-    isNumeric = (val) => !isNaN(val) && !isNaN(parseFloat(val));
-
     getElement(selector) {
         if (typeof selector === 'string') {
             return document.querySelector(selector);
@@ -48,7 +46,7 @@ class Maps {
     }
 
     simulateClick(element) {
-        const $element = getElement(element);
+        const $element = this.getElement(element);
         const mouseDown = new MouseEvent('mousedown', {
             bubbles: true,
             cancelable: true,
@@ -71,7 +69,7 @@ class Maps {
     }
 
     typeAndEnter(element, value) {
-        const $input = getElement(element);
+        const $input = this.getElement(element);
 
         if (!$input) {
         console.error('Input não encontrado para selector:', element);
@@ -168,31 +166,6 @@ class Maps {
         }
     }
 
-    async changeMapNumber() {
-        const mapNumber = prompt("Território: ");
-        if (mapNumber !== '' && !isNumeric(mapNumber)) {
-            alert("Número inválido!");
-            return;
-        }
-
-        $edit_button = getElement('.docs-material-button-flat-default')
-        if (!$edit_button.classList.contains('docs-material-button-disabled')) {
-            simulateClick($edit_button);
-            await wait();
-        }
-        simulateClick('.goog-flat-menu-button.waffle-pivot-filter-pill-select');
-        await wait();
-        simulateClick('.waffle-filterbox-clear-button > div');
-        await wait();
-        if (mapNumber === '') {
-            simulateClick('.waffle-filterbox-select-all-button > div');
-        } else {
-            typeAndEnter('input.waffle-filterbox-input', mapNumber);
-            await wait();
-        }
-        simulateClick('.waffle-filterbox-ok-button > div');
-    }
-
     async generateMAP() {
         this.setIcons();
         for (const button in this.BUTTONS_MAP) {
@@ -201,7 +174,7 @@ class Maps {
         }
     }
 
-    async importFILE() {
+    async importFile() {
         this.setIcons();
         for (const button in this.BUTTONS_IMPORT) {
             this.simulateClick(this.BUTTONS_IMPORT[button]);
@@ -214,10 +187,16 @@ class Maps {
             console.error('A extensão não foi detectada.');
             return;
         }
-        await mapsAutomation.clickNoPicker('button[id="1"]')
-        await mapsAutomation.typeAndEnter('Direcciones')
-        await this.wait(this.WAIT_TIME_MS * 4);
-        await mapsAutomation.clickFirstResult('[data-id="1T5YaD-KZgqogJBSBNOOsT9-cP5pK2ROYORvTYwfAA-Q"]')
+        await mapsAutomation.clickNoPicker('button[id="1"]');
+        await mapsAutomation.typeAndEnter('Direcciones');
+        await this.wait(2000);
+        await mapsAutomation.clickFirstResult('[data-id="1T5YaD-KZgqogJBSBNOOsT9-cP5pK2ROYORvTYwfAA-Q"]');
+    }
+
+    async importAndLoadFile() {
+        await this.importFile();
+        await this.wait(1000);
+        await this.loadFile();
     }
 
     generatePDF() {
@@ -227,8 +206,10 @@ class Maps {
     }
 }
 
-// Maps.frame();
-//const mapa = new Maps();
-// await mapa.importFILE();
-// mapa.generateMAP();
-// mapa.generatePDF();
+/*
+Maps.frame();
+const mapa = new Maps();
+await mapa.importAndLoadFile();
+await mapa.generateMAP();
+mapa.generatePDF();
+*/

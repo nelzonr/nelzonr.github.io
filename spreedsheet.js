@@ -1,0 +1,88 @@
+(function () {
+
+	const isNumeric = (val) => !isNaN(val) && !isNaN(parseFloat(val));
+
+	function getElement(selector) {
+		if (typeof selector === 'string') {
+			return document.querySelector(selector);
+		} else if (selector instanceof HTMLElement) {
+			return selector;
+		}
+		return null;
+	}
+
+	async function wait(ms) {
+		const milliseconds = ms || 500;
+		return new Promise(resolve => setTimeout(resolve, milliseconds));
+	}
+
+	function simulateClick(element) {
+		const $element = getElement(element);
+		const mouseDown = new MouseEvent('mousedown', {
+			bubbles: true,
+			cancelable: true,
+			view: window
+		});
+		const mouseUp = new MouseEvent('mouseup', {
+			bubbles: true,
+			cancelable: true,
+			view: window
+		});
+		const click = new MouseEvent('click', {
+			bubbles: true,
+			cancelable: true,
+			view: window
+		});
+
+		$element.dispatchEvent(mouseDown);
+		$element.dispatchEvent(mouseUp);
+		$element.dispatchEvent(click);
+	}
+
+	function typeAndEnter(element, value) {
+		const $input = getElement(element);
+
+		if (!$input) {
+			console.error('Input não encontrado para selector:', element);
+			return false;
+		}
+
+		$input.focus();
+		const nativeInputSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+		nativeInputSetter.call($input, value);
+		$input.dispatchEvent(new Event('input', { bubbles: true }));
+		$input.dispatchEvent(new Event('change', { bubbles: true }));
+		$input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13, bubbles: true }));
+		$input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', keyCode: 13, bubbles: true }));
+		$input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', keyCode: 13, bubbles: true }));
+		return true;
+	}
+
+	async function run() {
+		const mapNumber = prompt("Território: ");
+		if (mapNumber !== '' && !isNumeric(mapNumber)) {
+			alert("Número inválido!");
+			return;
+		}
+
+		$edit_button = getElement('.docs-material-button-flat-default')
+		if (!$edit_button.classList.contains('docs-material-button-disabled')) {
+			simulateClick($edit_button);
+			await wait();
+		}
+		simulateClick('.goog-flat-menu-button.waffle-pivot-filter-pill-select');
+		await wait();
+		simulateClick('.waffle-filterbox-clear-button > div');
+		await wait();
+		if (mapNumber === '') {
+			simulateClick('.waffle-filterbox-select-all-button > div');
+		} else {
+			typeAndEnter('input.waffle-filterbox-input', mapNumber);
+		}
+		await wait();
+		simulateClick('.waffle-filterbox-ok-button > div');
+
+	}
+
+	run();
+})();
