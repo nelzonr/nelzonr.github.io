@@ -166,14 +166,6 @@ class Maps {
         }
     }
 
-    async generateMAP() {
-        this.setIcons();
-        for (const button in this.BUTTONS_MAP) {
-            this.simulateClick(this.BUTTONS_MAP[button]);
-            await this.wait();
-        }
-    }
-
     async importFile() {
         this.setIcons();
         for (const button in this.BUTTONS_IMPORT) {
@@ -197,6 +189,14 @@ class Maps {
         await this.importFile();
         await this.wait(1000);
         await this.loadFile();
+    }
+
+    async generateMAP() {
+        this.setIcons();
+        for (const button in this.BUTTONS_MAP) {
+            this.simulateClick(this.BUTTONS_MAP[button]);
+            await this.wait();
+        }
     }
 
     generatePDF() {
