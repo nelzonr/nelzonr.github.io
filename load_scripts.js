@@ -34,6 +34,9 @@
                 loadTerritoriosFiles.frame = () => {
                     Maps.frame();
                 };
+                loadTerritoriosFiles.importAndLoadFile = () => {
+                    loadTerritoriosFiles.Maps().importAndLoadFile();
+                };
                 loadTerritoriosFiles.generateMAP = () => {
                     loadTerritoriosFiles.Maps().generateMAP();
                 };
