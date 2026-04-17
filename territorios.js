@@ -235,5 +235,3 @@ await mapa.importAndLoadFile();
 await mapa.generateMAP();
 mapa.generatePDF();
 */
-const mapa = new Maps();
-mapa.generatePDF();
