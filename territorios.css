@@ -18,6 +18,10 @@ body.print .pbTTYe-BPrWId {
 body.print .un1lmc-pbTTYe-ibnC6b-r4nke {
   max-width: 100%;
 }
+body.print a {
+  color: black;
+  text-decoration: none;
+}
 
 .moldura {
   position: absolute;

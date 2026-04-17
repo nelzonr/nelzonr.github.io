@@ -126,7 +126,8 @@ class Maps {
     }
 
     addEventReplaceBr() {
-        this.LAYERS['enderecos'].forEach(function(div) {
+        this.LAYERS['icones_image'].forEach(function(img) {
+            const div = img.parentElement.parentElement;
             div.addEventListener("dblclick", function () {
                 if (div.innerHTML.includes("<br>")) {
                     div.innerHTML = div.innerHTML.replace(/<br>/g, '');
@@ -134,6 +135,26 @@ class Maps {
                     div.innerHTML = div.innerHTML.replace(/#/g, '<br>#');
                 }
             });
+        });
+    }
+
+    expandAddress = (address) => {
+        const justAddress = address.match(/^.+?,\s*\d+/)?.[0] ?? address;
+        const abbr = { "R.": "Rua", "Av.": "Avenida", "Tv.": "Travessa" };
+        return justAddress
+            .replace(/\b(R\.|Av\.|Tv\.)\s/g, (_, key) => `${abbr[key]} `)
+            .replace(/\s/g, "+");
+    }
+
+    addressToLink() {
+        this.LAYERS['enderecos'].forEach((div) => {
+            const text = div.textContent.trim();
+            const address = this.expandAddress(text);
+            const link = document.createElement("a");
+            link.href = `https://www.google.com/maps/search/?api=1&query=${address}+São+Paulo`;
+            link.target = "_blank";
+            link.textContent = text;
+            div.replaceWith(link);
         });
     }
 
@@ -203,6 +224,7 @@ class Maps {
         this.removeFirstLayer();
         this.replaceIcons();
         this.addEventReplaceBr();
+        this.addressToLink();
     }
 }
 
@@ -213,3 +235,5 @@ await mapa.importAndLoadFile();
 await mapa.generateMAP();
 mapa.generatePDF();
 */
+const mapa = new Maps();
+mapa.generatePDF();
