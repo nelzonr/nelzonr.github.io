@@ -135,11 +135,41 @@
         integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
     <script>anchors.add();</script>
 
-    <!-- Banner -->
-    <div id="cookie-banner" style="display:none">
-        <p>Usamos cookies para analisar o tráfego. Aceita?</p>
-        <button onclick="acceptCookies()">Aceitar</button>
-        <button onclick="rejectCookies()">Recusar</button>
+    <style>
+        #cookie-banner {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #24292e;
+            color: #e1e4e8;
+            padding: 14px 24px;
+            align-items: center;
+            gap: 16px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 14px;
+            z-index: 9999;
+            flex-wrap: wrap;
+        }
+        #cookie-banner.visible { display: flex; }
+        #cookie-banner button {
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            border: none;
+        }
+        #cookie-banner .btn-accept { background: #2ea44f; color: #fff; }
+        #cookie-banner .btn-reject { background: transparent; color: #e1e4e8; border: 1px solid #444d56 !important; }
+    </style>
+    <div id="cookie-banner">
+        <span style="flex:1;min-width:200px;">Este site usa cookies do Google Analytics para analisar o tráfego.</span>
+        <div style="display:flex;gap:8px;flex-shrink:0;">
+            <button class="btn-accept" onclick="acceptCookies()">Aceitar</button>
+            <button class="btn-reject" onclick="rejectCookies()">Recusar</button>
+        </div>
     </div>
 
     <script>
@@ -157,13 +187,12 @@
         }
 
         function hideBanner() {
-            document.getElementById('cookie-banner').style.display = 'none';
+            document.getElementById('cookie-banner').classList.remove('visible');
         }
 
-        // Ao carregar: verifica se já tem preferência salva
         const saved = localStorage.getItem(CONSENT_KEY);
         if (!saved) {
-            document.getElementById('cookie-banner').style.display = 'block';
+            document.getElementById('cookie-banner').classList.add('visible');
         } else if (saved === 'granted') {
             gtag('consent', 'update', { analytics_storage: 'granted' });
         }
