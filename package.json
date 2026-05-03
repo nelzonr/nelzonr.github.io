@@ -1,7 +1,7 @@
 {
   "scripts": {
     "minify": "terser load_scripts.js -o load_scripts.min.js && terser territorios.js -o territorios.min.js && terser spreedsheet.js -o spreedsheet.min.js",
-    "minify:custom_bar": "terser custom_bar.js -o custom_bar.min.js"
+    "minify:custom_bar": "terser custom_bar.js -o custom_bar.min.js && terser custom_bar_bookmarklet.js -o custom_bar_bookmarklet.min.js"
   },
   "devDependencies": {
     "terser": "^5.46.1"
