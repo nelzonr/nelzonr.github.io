@@ -4,7 +4,12 @@ javascript:(function () {
         { label: 'ES', locale: 'es', region: 'r4', lp: 'lp-s' },
         { label: 'EN', locale: 'en', region: 'r1', lp: 'lp-e' },
     ];
-    var s = document.createElement('script');
-    s.src = 'https://nelzonr.github.io/custom_bar.min.js';
-    document.head.appendChild(s);
+    // Código inlado para contornar o CSP do JW.org que bloqueia <script src> externo.
+    // Fonte: custom_bar.js / custom_bar.min.js
+    (function () {
+        const customLanguages = window.AG_LANGUAGES ?? null;
+        // ... (ver custom_bar.js para o código completo)
+        // Para gerar o bookmarklet minificado, execute: npm run minify
+        // e use o conteúdo de custom_bar_bookmarklet.min.js
+    })();
 })();
